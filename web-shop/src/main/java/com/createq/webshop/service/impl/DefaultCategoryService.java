@@ -22,7 +22,5 @@ public class DefaultCategoryService implements CategoryService {
     }
 
     @Override
-    public List<CategoryModel> getAll() {
-        return this.categoryRepository.findAll();
-    }
+    public List<CategoryModel> getAll() { return this.categoryRepository.findAll(); }
 }

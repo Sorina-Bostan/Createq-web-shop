@@ -40,6 +40,7 @@ $(document).ready(function() {
         });
     });
 
+
     // functions
     function loadProducts(categoryId) {
         contentContainer.html('<p>Loading the products...</p>');

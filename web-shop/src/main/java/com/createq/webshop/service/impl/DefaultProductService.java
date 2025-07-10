@@ -1,5 +1,6 @@
 package com.createq.webshop.service.impl;
 
+import com.createq.webshop.exception.ResourceNotFoundException;
 import com.createq.webshop.model.ProductModel;
 import com.createq.webshop.repository.ProductRepository;
 import com.createq.webshop.service.ProductService;
@@ -33,6 +34,6 @@ public class DefaultProductService implements ProductService {
     @Override
     public ProductModel getProductById(Long productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException(productId + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException(productId + " not found."));
     }
 }
