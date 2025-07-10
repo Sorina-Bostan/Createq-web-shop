@@ -8,13 +8,13 @@ $(document).ready(function() {
     body.on('click', '.category-link', function(event) {
         event.preventDefault();
         const categoryId = $(this).data('category-id');
-        loadProductsFragment(categoryId);
+        loadProducts(categoryId);
     });
 
     body.on('click', '.product-link', function(event) {
         event.preventDefault();
         const productId = $(this).data('product-id');
-        loadProductDetailsFragment(productId);
+        loadProductDetails(productId);
     });
     body.on('click', '.add-to-cart-btn', function() {
         const productId = $(this).data('product-id');
@@ -29,11 +29,21 @@ $(document).ready(function() {
         updateCartSummary();
         alert("The cart is empty!");
     });
+    body.on('click', '#all-products-link', function(event) {
+        event.preventDefault();
+        const url = "/products";
+        contentContainer.html('<p>Loading...</p>');
+        contentContainer.load(url, function(response, status, xhr) {
+            if (status !== "success") {
+                contentContainer.html("<p>Error.</p>");
+            }
+        });
+    });
 
     // functions
-    function loadProductsFragment(categoryId) {
+    function loadProducts(categoryId) {
         contentContainer.html('<p>Loading the products...</p>');
-        const url = `/fragments/categories/${categoryId}/products`;
+        const url = `/products/category/${categoryId}`;
 
         contentContainer.load(url, function(response, status, xhr) {
             if (status !== "success") {
@@ -43,9 +53,9 @@ $(document).ready(function() {
         });
     }
 
-    function loadProductDetailsFragment(productId) {
+    function loadProductDetails(productId) {
         contentContainer.html('<p>Loading the details...</p>');
-        const url = `/fragments/products/${productId}`;
+        const url = `/products/${productId}`;
 
         contentContainer.load(url, function(response, status, xhr) {
             if (status !== "success") {

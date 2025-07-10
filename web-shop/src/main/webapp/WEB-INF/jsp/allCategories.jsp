@@ -26,8 +26,10 @@
                 </c:forEach>
             </ul>
         </c:if>
+        <br>
+        <a href="#" id="all-products-link">See all products</a>
     </nav>
-
+    <br>
     <%-- TODO: add in common.js the functionality for sorting the products--%>
     <div id="sorting-controls" >
         <label for="sort-select">Sort by:</label>
@@ -44,6 +46,8 @@
         <div id="product-list-container"></div>
     </main>
     <button id="delete-cart">Empty the cart</button>
+
+
 
 <script src="<c:url value='static/script/common.js'/>"></script>
 </body>
