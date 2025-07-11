@@ -21,7 +21,7 @@
     }
     .error-title {
       font-size: 2.5em;
-      color: white;
+      color:  #b5764a;
       margin: 20px 0 10px 0;
     }
     .error-message {
@@ -33,8 +33,8 @@
       display: inline-block;
       margin-top: 30px;
       padding: 10px 25px;
-      background-color: saddlebrown;
-      color: white;
+      background-color: #e81958;
+      color:  white;
       text-decoration: none;
       border-radius: 5px;
       font-weight: bold;
@@ -42,7 +42,7 @@
     }
 
     .back-link:hover {
-      background-color: #b5764a;
+      background-color: #aa826a;
     }
   </style>
 </head>

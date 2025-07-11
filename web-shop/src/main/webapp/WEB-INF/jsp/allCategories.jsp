@@ -35,11 +35,14 @@
         </video>
     </div>
     <br>
-
     <main id="content-container" >
-        <div id="product-list-container"></div>
+        <div id="product-list-container">
+            <jsp:include page="/WEB-INF/jsp/fragments/productListFragment.jsp" />
+        </div>
     </main>
-
+    <footer>
+        <h3>© Createq Web-Shop - Bostan Sorina-Gabriela</h3>
+    </footer>
 <script src="<c:url value='static/script/common.js'/>"></script>
 </body>
 </html>
