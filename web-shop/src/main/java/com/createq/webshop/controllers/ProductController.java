@@ -1,10 +1,12 @@
 package com.createq.webshop.controllers;
 
+import com.createq.webshop.exception.ResourceNotFoundException;
 import com.createq.webshop.facades.CategoryFacade;
 import com.createq.webshop.facades.ProductFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,5 +38,12 @@ public class ProductController {
     public String getAllProducts(Model model) {
         model.addAttribute("products", productFacade.getAll());
         return "fragments/productListFragment";
+    }
+
+    // this method will be called when a method in this class throws a ResourceNotFoundException
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public String handleProductNotFound(ResourceNotFoundException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error";
     }
 }

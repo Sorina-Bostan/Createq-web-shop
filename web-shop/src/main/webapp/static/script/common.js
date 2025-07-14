@@ -40,8 +40,10 @@ $(document).ready(function() {
         });
     });
 
+
     // functions
     function loadProducts(categoryId) {
+        $('.forVideo').hide();
         contentContainer.html('<p>Loading the products...</p>');
         const url = `/products/category/${categoryId}`;
 
@@ -54,6 +56,7 @@ $(document).ready(function() {
     }
 
     function loadProductDetails(productId) {
+        $('.forVideo').hide();
         contentContainer.html('<p>Loading the details...</p>');
         const url = `/products/${productId}`;
 
@@ -98,5 +101,16 @@ $(document).ready(function() {
         updateCartSummary();
         alert(`"${productName}" was added to cart!`);
     }
+    function loadAllProducts() {
+        const url = "/products";
+        contentContainer.html('<p>Loading...</p>');
+        contentContainer.load(url, function(response, status, xhr) {
+            if (status !== "success") {
+                contentContainer.html("<p>Error.</p>");
+            }
+        });
+    }
+
+    loadAllProducts();
 
 });

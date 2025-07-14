@@ -2,20 +2,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Products</title>
+    <title>ModernWalk</title>
     <link rel="stylesheet" type="text/css" href="<c:url value='/static/css/common.css'/>">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-    <header>
-        <strong>Cart: </strong>
-        <span id="cart-item-count">0</span> products |
-        <strong>Total: </strong>
-        <span id="cart-total-price">0.00</span> RON
-    </header>
-    <nav>
-        <h1>Categories</h1>
+    <header class="main-header">
+    <nav class="main-navigation">
         <c:if test="${not empty categories}">
+            <div class="logo-container">
+                <img src="<c:url value='/static/images/font.png' />" alt="ModernWalk Logo"/>
+            </div>
             <ul id="category-menu">
                 <c:forEach items="${categories}" var="category">
                     <li>
@@ -24,31 +21,28 @@
                         </a>
                     </li>
                 </c:forEach>
+                <li><a href="#" id="all-products-link"><strong>All</strong></a></li>
             </ul>
         </c:if>
         <br>
-        <a href="#" id="all-products-link">See all products</a>
     </nav>
+    </header>
     <br>
-    <%-- TODO: add in common.js the functionality for sorting the products--%>
-    <div id="sorting-controls" >
-        <label for="sort-select">Sort by:</label>
-        <select id="sort-select">
-            <option value="default">Implicit</option>
-            <option value="price-asc">Price (ascending)</option>
-            <option value="price-desc">Price (descending)</option>
-        </select>
-        <button id="sort-button">Sort</button>
+    <div class="forVideo">
+        <video width="600" autoplay muted loop playsinline>
+            <source src="<c:url value='static/video/vintage_video.mp4'/>" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
-
-
+    <br>
     <main id="content-container" >
-        <div id="product-list-container"></div>
+        <div id="product-list-container">
+            <jsp:include page="/WEB-INF/jsp/fragments/productListFragment.jsp" />
+        </div>
     </main>
-    <button id="delete-cart">Empty the cart</button>
-
-
-
+    <footer>
+        <h3>© Createq Web-Shop - Bostan Sorina-Gabriela</h3>
+    </footer>
 <script src="<c:url value='static/script/common.js'/>"></script>
 </body>
 </html>

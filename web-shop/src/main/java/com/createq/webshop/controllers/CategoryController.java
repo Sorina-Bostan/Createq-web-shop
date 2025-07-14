@@ -24,6 +24,7 @@ public class CategoryController {
     @GetMapping("categories")
     public String showMainPageWithCategories(Model model) {
         model.addAttribute("categories", categoryFacade.getAll());
+        model.addAttribute("products", productFacade.getAll());
         return "allCategories";
     }
 }
