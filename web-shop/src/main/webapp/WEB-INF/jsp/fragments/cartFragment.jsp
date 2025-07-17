@@ -1,7 +1,59 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<strong>Cart: </strong>
-<span id="cart-item-count">0</span> products |
-<strong>Total: </strong>
-<span id="cart-total-price">0.00</span> RON
+<div class="cart-page-container">
+    <h1 class="cart-title">Your shopping cart</h1>
+    <div id="cart-content-wrapper">
+        <table class="cart-table">
+            <thead>
+            <tr>
+                <th class="product-column">Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="cart-items-container">
+            </tbody>
+        </table>
+        <div class="cart-summary">
+            <h3>Cart summary</h3>
+            <div class="summary-line">
+                <span>Total Items:</span>
+                <span id="cart-item-count-summary">0</span>
+            </div>
+            <div class="summary-line">
+                <span>Total Price:</span>
+                <strong id="cart-total-price-summary">0.00 RON</strong>
+            </div>
+            <button id="checkout-btn" class="checkout-button">Proceed to Checkout</button>
+            <button id="clear-cart-btn" class="clear-cart-button">Clear Cart</button>
+        </div>
 
-<button id="delete-cart">Empty the cart</button>
+    </div>
+</div>
+<template id="cart-item-template">
+    <tr class="cart-item-row">
+        <td>
+            <div class="cart-product-details">
+                <img class="cart-item-image" src="" alt="Product Image">
+                <span class="cart-item-name">Product Name</span>
+            </div>
+        </td>
+
+        <td class="cart-item-price">0.00 RON</td>
+        <td class="cart-item-quantity">
+            <span class="quantity-display">1</span>
+        </td>
+        <td class="quantity-adjuster-cell">
+            <div class="quantity-adjuster">
+                <button class="quantity-btn decrease-btn" data-product-id="">-</button>
+                <button class="quantity-btn increase-btn" data-product-id="">+</button>
+            </div>
+        </td>
+        <td class="cart-item-total">0.00 RON</td>
+        <td>
+            <button class="remove-item-btn" data-product-id="">X</button>
+        </td>
+    </tr>
+</template>
