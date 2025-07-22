@@ -79,6 +79,6 @@
             </div>
         </div>
     </div>
-    <script src="${contextPath}/static/script/common.js"></script>
+    <script type="module" src="<c:url value='${contextPath}/static/script/main.js'/>"></script>
 </body>
 </html>
