@@ -20,24 +20,9 @@ public class ProductController {
     private final ProductFacade productFacade;
 
     @Autowired
-    public ProductController(ProductFacade productFacade,ObjectMapper objectMapper) {
+    public ProductController(ProductFacade productFacade) {
         this.productFacade = productFacade;
     }
-
-    /*
-    @GetMapping("/category/{categoryId}")
-    public String getProducts(@PathVariable Long categoryId, Model model) {
-        List<ProductDTO> products=productFacade.getProductsByCategoryId(categoryId);
-        model.addAttribute("products",products);
-        return "fragments/productListFragment";
-    }
-    @GetMapping("")
-    public String getAllProducts(Model model) {
-        List<ProductDTO> products = productFacade.getAll();
-        model.addAttribute("products", products);
-        return "fragments/productListFragment";
-    }*/
-
     @GetMapping("/{productId}")
     public String getProductDetails(@PathVariable Long productId, Model model) {
         model.addAttribute("product", productFacade.getProductById(productId));
