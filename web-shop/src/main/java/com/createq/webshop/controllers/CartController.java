@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/api/cart")
 public class CartController {
-    @GetMapping("")
+    @GetMapping
     public String showCartPage() {
         return "fragments/cartFragment";
     }
