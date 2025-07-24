@@ -32,6 +32,7 @@
                         data-product-name="${product.name}"
                         data-product-price="${product.price}"
                         data-product-image-url="${product.imageUrl}"
+                        data-product-stock="${product.stockQuantity}"
                          ${product.stockQuantity <= 0 ? 'disabled' : ''}>
                     Add to cart</button>
             </div>
