@@ -21,10 +21,16 @@ public class CategoryController {
         this.categoryFacade = categoryFacade;
     }
 
-    @GetMapping("categories")
-    public String showMainPageWithCategories(Model model) {
+    @GetMapping(value = {
+            "/",
+            "/categories",
+            "/products",
+            "/products/category/{categoryId}",
+            "/products/{productId}",
+            "/cart"
+    })
+    public String forwardToMainPage(Model model) {
         model.addAttribute("categories", categoryFacade.getAll());
-        model.addAttribute("products", productFacade.getAll());
         return "allCategories";
     }
 }
