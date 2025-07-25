@@ -6,6 +6,7 @@ $(document).ready(function() {
     const contentContainer = $('#product-list-container');
     const body = $('body');
     let productToRemoveId = null;
+    let actionToConfirm = null;
 
     body.on('click', '.category-link', function(e) { e.preventDefault(); productService.loadProducts($(this).data('category-id'), contentContainer); });
     body.on('click', '.product-link', function(e) { e.preventDefault(); productService.loadProductDetails($(this).data('product-id'), contentContainer); });
@@ -39,25 +40,36 @@ $(document).ready(function() {
 
     // cart actions
     body.on('click', '#clear-cart-btn', function() {
-        if (confirm("Are you sure you want to empty the cart?")) {
-            cartService.clearCart();
-            cartService.loadCartPage(contentContainer);
-        }
+        actionToConfirm = 'clear-cart';
+        $('#modal-title').text('Empty Cart');
+        $('#modal-message').text('Are you sure you want to remove all items from your cart?');
+        $('#modal-confirm-btn').text('Yes, Empty Cart');
+        $('#confirm-modal-overlay').addClass('show');
     });
     body.on('click', '.remove-item-btn', function() {
+        actionToConfirm = 'remove-item';
         productToRemoveId = parseInt($(this).data('product-id'));
+        $('#modal-title').text('Remove Item');
+        $('#modal-message').text('Are you sure you want to remove this item from your cart?');
+        $('#modal-confirm-btn').text('Yes, Remove');
         $('#confirm-modal-overlay').addClass('show');
     });
     body.on('click', '#modal-confirm-btn', function() {
-        if (productToRemoveId !== null) {
-            cartService.removeItemFromCart(productToRemoveId);
-            productToRemoveId = null;
-            $('#confirm-modal-overlay').removeClass('show');
+        if (actionToConfirm === 'clear-cart') {
+            cartService.clearCart();
             cartService.loadCartPage(contentContainer);
         }
+        else if (actionToConfirm === 'remove-item' && productToRemoveId !== null) {
+            cartService.removeItemFromCart(productToRemoveId);
+            cartService.loadCartPage(contentContainer);
+        }
+        productToRemoveId = null;
+        actionToConfirm = null;
+        $('#confirm-modal-overlay').removeClass('show');
     });
     body.on('click', '#modal-cancel-btn', function() {
         productToRemoveId = null;
+        actionToConfirm = null;
         $('#confirm-modal-overlay').removeClass('show');
     });
 

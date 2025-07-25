@@ -71,10 +71,10 @@
     </footer>
     <div id="confirm-modal-overlay">
         <div id="confirm-modal">
-            <h3 id="modal-title">Confirm Deletion</h3>
-            <p id="modal-message">Are you sure you want to remove this item from your cart?</p>
+            <h3 id="modal-title">Confirm Action</h3>
+            <p id="modal-message">Are you sure?</p>
             <div class="modal-buttons">
-                <button id="modal-confirm-btn">Yes, Remove</button>
+                <button id="modal-confirm-btn">Yes, Proceed</button>
                 <button id="modal-cancel-btn">Cancel</button>
             </div>
         </div>
