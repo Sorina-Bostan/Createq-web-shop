@@ -311,6 +311,9 @@ footer h3 {
     transform: translateY(0);
     pointer-events: auto;
 }
+#cart-banner.error {
+    background-color: #d9534f;
+}
 .cart-icon-link {
     padding: 10px 5px !important;
     transition: transform 0.2s ease;
@@ -423,6 +426,14 @@ th.product-column {
 
 .cart-item-name {
     font-weight: bold;
+}
+.cart-product-details .product-link {
+    text-decoration: none;
+    color: inherit;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 .remove-item-btn {
     background-color: #d9534f;

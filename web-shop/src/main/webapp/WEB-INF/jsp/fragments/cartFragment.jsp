@@ -27,7 +27,7 @@
                 <strong id="cart-total-price-summary">0.00 RON</strong>
             </div>
             <button id="checkout-btn" class="checkout-button">Proceed to Checkout</button>
-            <button id="clear-cart-btn" class="clear-cart-button">Clear Cart</button>
+            <button id="clear-cart-btn" class="clear-cart-button">Clear</button>
         </div>
 
     </div>
@@ -36,8 +36,10 @@
     <tr class="cart-item-row">
         <td>
             <div class="cart-product-details">
-                <img class="cart-item-image" src="" alt="Product Image">
-                <span class="cart-item-name">Product Name</span>
+                <a href="#" class="product-link" data-product-id="">
+                    <img class="cart-item-image" src="" alt="Product Image">
+                    <span class="cart-item-name">Product Name</span>
+                </a>
             </div>
         </td>
 

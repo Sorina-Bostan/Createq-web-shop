@@ -56,11 +56,9 @@ $(document).ready(function() {
             cartService.loadCartPage(contentContainer);
         }
     });
-    body.on('click', '#modal-cancel-btn, #confirm-modal-overlay', function(e) {
-        if (e.target.id === 'modal-cancel-btn' || e.target.id === 'confirm-modal-overlay') {
-            productToRemoveId = null;
-            $('#confirm-modal-overlay').removeClass('show');
-        }
+    body.on('click', '#modal-cancel-btn', function() {
+        productToRemoveId = null;
+        $('#confirm-modal-overlay').removeClass('show');
     });
 
     // quantity

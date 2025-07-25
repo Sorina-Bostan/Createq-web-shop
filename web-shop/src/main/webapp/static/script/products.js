@@ -58,7 +58,7 @@ function renderProductPage(products, container) {
         <div id="sorting-controls">
             <label for="sort-select">Sort by:</label>
             <select id="sort-select">
-                <option value="default">Default</option>
+                <option value="default" disabled selected hidden>Default</option>
                 <option value="price-asc">Price (Low to High)</option>
                 <option value="price-desc">Price (High to Low)</option>
             </select>
