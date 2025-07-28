@@ -20,6 +20,7 @@ public class ProductConverter {
         productDTO.setPrice(productModel.getPrice());
         productDTO.setImageUrl(productModel.getImageUrl());
         productDTO.setCategoryName(productModel.getCategory().getName());
+        productDTO.setStockQuantity(productModel.getStockQuantity());
         return productDTO;
     }
     public List<ProductDTO> convertAll(List<ProductModel> studentsModel) {

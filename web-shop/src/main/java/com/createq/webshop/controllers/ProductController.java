@@ -1,18 +1,20 @@
 package com.createq.webshop.controllers;
 
+import com.createq.webshop.dto.ProductDTO;
 import com.createq.webshop.exception.ResourceNotFoundException;
 import com.createq.webshop.facades.CategoryFacade;
 import com.createq.webshop.facades.ProductFacade;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductFacade productFacade;
@@ -21,23 +23,22 @@ public class ProductController {
     public ProductController(ProductFacade productFacade) {
         this.productFacade = productFacade;
     }
-
-    @GetMapping("/category/{categoryId}")
-    public String getProducts(@PathVariable Long categoryId, Model model) {
-        model.addAttribute("products", productFacade.getProductsByCategoryId(categoryId));
-        return "fragments/productListFragment";
-    }
-
     @GetMapping("/{productId}")
     public String getProductDetails(@PathVariable Long productId, Model model) {
         model.addAttribute("product", productFacade.getProductById(productId));
         return "fragments/productDetailsFragment";
     }
 
+
     @GetMapping("")
-    public String getAllProducts(Model model) {
-        model.addAttribute("products", productFacade.getAll());
-        return "fragments/productListFragment";
+    @ResponseBody
+    public List<ProductDTO> getAllProducts() {
+        return productFacade.getAll();
+    }
+    @GetMapping("/category/{categoryId}")
+    @ResponseBody
+    public List<ProductDTO> getProducts(@PathVariable Long categoryId) {
+        return productFacade.getProductsByCategoryId(categoryId);
     }
 
     // this method will be called when a method in this class throws a ResourceNotFoundException
