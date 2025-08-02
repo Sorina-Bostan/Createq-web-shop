@@ -1,7 +1,12 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="cart-page-container">
     <h1 class="cart-title">Your shopping cart</h1>
-    <div id="cart-content-wrapper">
+    <div id="auth-prompt-box" class="auth-prompt-box" style="display: none;">
+        <p>Already have an account? <a href="#" id="login-link-from-cart">Login</a> to see your saved items.</p>
+        <p>New to ModernWalk? <a href="#" id="register-link-from-cart">Create an account</a> to save your cart for later!</p>
+    </div>
+    <div class="cart-content-wrapper">
         <table class="cart-table">
             <thead>
             <tr>
@@ -29,7 +34,6 @@
             <button id="checkout-btn" class="checkout-button">Proceed to Checkout</button>
             <button id="clear-cart-btn" class="clear-cart-button">Clear</button>
         </div>
-
     </div>
 </div>
 <template id="cart-item-template">

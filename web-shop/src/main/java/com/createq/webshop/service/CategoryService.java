@@ -6,5 +6,5 @@ import com.createq.webshop.model.ProductModel;
 import java.util.List;
 
 public interface CategoryService {
-    public List<CategoryModel> getAll();
+    List<CategoryModel> getAll();
 }

@@ -27,10 +27,13 @@ public class CategoryController {
             "/products",
             "/products/category/{categoryId}",
             "/products/{productId}",
-            "/cart"
+            "/cart",
+            "/login",
+            "/register"
     })
     public String forwardToMainPage(Model model) {
         model.addAttribute("categories", categoryFacade.getAll());
         return "allCategories";
     }
+
 }

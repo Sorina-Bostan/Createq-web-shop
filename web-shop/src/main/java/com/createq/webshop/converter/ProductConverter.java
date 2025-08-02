@@ -23,10 +23,10 @@ public class ProductConverter {
         productDTO.setStockQuantity(productModel.getStockQuantity());
         return productDTO;
     }
-    public List<ProductDTO> convertAll(List<ProductModel> studentsModel) {
-        if(studentsModel == null) { return null;}
+    public List<ProductDTO> convertAll(List<ProductModel> productsModel) {
+        if(productsModel == null) { return null;}
         List<ProductDTO> productDTOList = new ArrayList<>();
-        for(ProductModel productModel : studentsModel) {
+        for(ProductModel productModel : productsModel) {
             productDTOList.add(convert(productModel));
         }
         return productDTOList;
