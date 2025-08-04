@@ -19,6 +19,10 @@ public class CartItemConverter {
         if(cartItemModel == null) { return null;}
         CartItemDTO cartItemDTO = new CartItemDTO();
         cartItemDTO.setId(cartItemModel.getId());
+        cartItemDTO.setName(cartItemModel.getName());
+        cartItemDTO.setPrice(cartItemModel.getPrice());
+        cartItemDTO.setImageUrl(cartItemModel.getImageUrl());
+        cartItemDTO.setPrice(cartItemModel.getPrice());
         cartItemDTO.setQuantity(cartItemModel.getQuantity());
         if (cartItemModel.getProduct() != null) {
             cartItemDTO.setProductId(cartItemModel.getProduct().getId());
@@ -29,22 +33,6 @@ public class CartItemConverter {
         if (items == null) return null;
         return items.stream()
                 .map(this::convert)
-                .collect(Collectors.toList());
-    }
-    public CartItemModel toModel(CartItemDTO dto) {
-        if (dto == null) return null;
-
-        CartItemModel model = new CartItemModel();
-        model.setId(dto.getId());
-        model.setQuantity(dto.getQuantity());
-        return model;
-    }
-
-    public List<CartItemModel> toModelList(List<CartItemDTO> dtos) {
-        if (dtos == null) return null;
-
-        return dtos.stream()
-                .map(this::toModel)
                 .collect(Collectors.toList());
     }
 }

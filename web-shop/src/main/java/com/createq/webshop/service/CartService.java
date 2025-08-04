@@ -8,10 +8,10 @@ import com.createq.webshop.model.UserModel;
 import java.util.List;
 
 public interface CartService {
-    //CartModel getCartForUser(UserModel user);
-    //CartModel addItemToCart(CartModel cart, Long productId, int quantity);
-    //CartModel updateItemQuantity(CartModel cart, Long itemId, int newQuantity);
-    //CartModel removeItemFromCart(CartModel cart, Long itemId);
-    //CartModel clearCart(CartModel cart);
-    //void mergeItemsIntoCart(CartModel cart, List<AddItemToCartDTO> itemsToMerge);
+    CartModel getCartForUser(UserModel user);
+    CartModel addItemToCart(CartModel cart, Long productId, int quantity);
+    void mergeItemsIntoCart(CartModel cart, List<AddItemToCartDTO> itemsToMerge);
+    CartModel updateItemQuantityByProductId(CartModel cart, Long productId, int newQuantity);
+    CartModel removeItemByProductId(CartModel cart, Long productId);
+    CartModel clearCart(CartModel cart);
 }

@@ -22,6 +22,8 @@ public class CartConverter {
         }
         CartDTO cartDTO = new CartDTO();
         cartDTO.setId(cartModel.getId());
+        cartDTO.setTotalItems(cartModel.getTotalItems());
+        cartDTO.setTotalPrice(cartModel.getTotalPrice());
         if (cartModel.getCartItems() != null && !cartModel.getCartItems().isEmpty()) {
             List<CartItemDTO> cartItemDTOs = cartItemConverter.convertAll(cartModel.getCartItems());
             cartDTO.setCartItems(cartItemDTOs);

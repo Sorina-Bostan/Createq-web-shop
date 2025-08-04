@@ -9,6 +9,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface CartRepository extends JpaRepository<CartModel,Long> {
-    //Optional<CartModel> findByUserWithItems(@Param("user") UserModel user);
-    //Optional<CartModel> findByUser(UserModel user);
+    Optional<CartModel> findByUser(UserModel user);
 }
