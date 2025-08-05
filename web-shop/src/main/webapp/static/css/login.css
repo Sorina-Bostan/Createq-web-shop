@@ -1,0 +1,239 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#login-form {
+    background-color: rgba(186, 148, 129, 0.7);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid #240604;
+}
+
+#login-form h2 {
+    color: #240604;
+    text-shadow: 2px 3px 1px #b5764a;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #240604;
+    font-size: 1.1rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #653717;
+    border-radius: 5px;
+    background-color: #d3b8a5;
+    font-family: 'Prata', serif;
+    font-size: 1rem;
+    color: #240604;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #240604;
+    box-shadow: 0 0 5px rgba(101, 55, 23, 0.5);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #653717;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: 'Prata', serif;
+}
+
+.submit-btn:hover {
+    background-color: saddlebrown;
+}
+
+.redirect-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #240604;
+}
+
+.redirect-link a {
+    color: #653717;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.error-message {
+    background-color: #d9534f;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: none;
+}
+#register-form {
+    background-color: rgba(186, 148, 129, 0.7);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid #240604;
+}
+
+#register-form h2 {
+    color: #240604;
+    text-shadow: 2px 3px 1px #b5764a;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+
+#register-form button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #653717;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: 'Prata', serif;
+}
+
+#register-form button[type="submit"]:hover {
+    background-color: saddlebrown;
+}
+
+#register-form p {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #240604;
+}
+
+#register-form p a {
+    color: #653717;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.input-error {
+    border-color: #d9534f !important;
+    box-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
+}
+.error-message-inline {
+    color: #d9534f;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none;
+    min-height: 1em;
+}
+#password-strength-meter {
+    margin-top: 8px;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+#strength-bar {
+    height: 100%;
+    width: 0;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+#strength-text {
+    position: absolute;
+    top: -2px;
+    left: 5px;
+    font-size: 0.8em;
+    line-height: 1.2;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+#strength-bar.weak {
+    width: 25%;
+    background-color: #d9534f;
+}
+#strength-bar.medium {
+    width: 60%;
+    background-color: #f0ad4e;
+}
+#strength-bar.strong {
+    width: 100%;
+    background-color: #5cb85c;
+}
+.top-bar {
+    width: 100%;
+    padding: 8px 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 40px;
+}
+
+#welcome-message-container {
+    color:#b5764a;
+    font-family: 'Prata', serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius:6px;
+}
+
+#welcome-message-container #username-display {
+    font-weight: bold;
+}
+#logout-menu-item .logout-button-link {
+    background: none;
+    border: none;
+    padding: 15px 5px;
+    margin: 0;
+    font-family: 'Prata', serif;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    font-size: 3.5rem;
+    text-shadow: 2px 3px 1px #b5764a;
+    transition: color 0.2s ease;
+    font-weight: bold;
+}
+
+#logout-menu-item .logout-button-link:hover {
+    color: #b5764a;
+}
+.top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 40px;
+    box-sizing: border-box;
+}
