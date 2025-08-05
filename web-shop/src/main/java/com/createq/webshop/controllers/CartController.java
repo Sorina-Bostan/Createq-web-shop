@@ -1,8 +1,5 @@
 package com.createq.webshop.controllers;
-import com.createq.webshop.dto.AddItemToCartDTO;
-import com.createq.webshop.dto.CartDTO;
-import com.createq.webshop.dto.CartSummaryDTO;
-import com.createq.webshop.dto.UpdateCartItemDTO;
+import com.createq.webshop.dto.*;
 import com.createq.webshop.facades.CartFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +21,7 @@ public class CartController {
         this.cartFacade = cartFacade;
     }
     @GetMapping("/view")
-    public String showCartPage(
-            @AuthenticationPrincipal UserDetails currentUser,
-            Model model
-    ) {
+    public String showCartPage(@AuthenticationPrincipal UserDetails currentUser, Model model) {
         if (currentUser != null) {
             CartDTO cartDto = cartFacade.getCartForCurrentUser(currentUser);
             model.addAttribute("cart", cartDto);
@@ -37,10 +31,7 @@ public class CartController {
 
     @PostMapping("/merge")
     @ResponseBody
-    public ResponseEntity<Void> mergeCart(
-            @AuthenticationPrincipal UserDetails currentUser,
-            @RequestBody List<AddItemToCartDTO> localCartItems
-    ) {
+    public ResponseEntity<Void> mergeCart(@AuthenticationPrincipal UserDetails currentUser, @RequestBody List<CartItemDTO> localCartItems) {
         if (currentUser != null && localCartItems != null && !localCartItems.isEmpty()) {
             cartFacade.mergeLocalCartWithUserCart(currentUser, localCartItems);
         }
@@ -49,9 +40,7 @@ public class CartController {
 
     @GetMapping("/summary")
     @ResponseBody
-    public ResponseEntity<CartSummaryDTO> getCartSummary(
-            @AuthenticationPrincipal UserDetails currentUser
-    ) {
+    public ResponseEntity<CartSummaryDTO> getCartSummary(@AuthenticationPrincipal UserDetails currentUser) {
         if (currentUser == null) {
             return ResponseEntity.ok(new CartSummaryDTO(0));
         }
@@ -60,31 +49,21 @@ public class CartController {
     }
     @PostMapping("/add")
     @ResponseBody
-    public ResponseEntity<CartDTO> addItemToCart(
-            @AuthenticationPrincipal UserDetails currentUser,
-            @RequestBody AddItemToCartDTO itemDto
-    ) {
+    public ResponseEntity<CartDTO> addItemToCart(@AuthenticationPrincipal UserDetails currentUser, @RequestBody CartItemDTO itemDto) {
         CartDTO updatedCart = cartFacade.addItemToCart(currentUser, itemDto.getProductId(), itemDto.getQuantity());
         return ResponseEntity.ok(updatedCart);
     }
 
     @PutMapping("/update/{productId}")
     @ResponseBody
-    public ResponseEntity<Void> updateItem(
-            @AuthenticationPrincipal UserDetails currentUser,
-            @PathVariable Long productId,
-            @RequestBody UpdateCartItemDTO updateDto
-    ) {
-        cartFacade.updateCartItemQuantityByProductId(currentUser, productId, updateDto.getNewQuantity());
+    public ResponseEntity<Void> updateItem(@AuthenticationPrincipal UserDetails currentUser, @PathVariable Long productId,  @RequestBody CartItemDTO itemDto) {
+        cartFacade.updateCartItemQuantityByProductId(currentUser, productId, itemDto.getQuantity());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/remove/{productId}")
     @ResponseBody
-    public ResponseEntity<Void> removeItemFromCart(
-            @AuthenticationPrincipal UserDetails currentUser,
-            @PathVariable Long productId
-    ) {
+    public ResponseEntity<Void> removeItemFromCart(@AuthenticationPrincipal UserDetails currentUser, @PathVariable Long productId) {
         cartFacade.removeItemFromCartByProductId(currentUser, productId);
         return ResponseEntity.noContent().build();
     }

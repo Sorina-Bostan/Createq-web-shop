@@ -40,12 +40,16 @@ function addToLocalCart(productData, quantity) {
 
 function addToServerCart(productData, quantity) {
     const quantityToAdd = quantity || 1;
+    const itemDto = {
+        productId: productData.id,
+        quantity: quantityToAdd
+    };
 
     $.ajax({
         url: '/api/cart/add',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ productId: productData.id, quantity: quantityToAdd }),
+        data: JSON.stringify(itemDto),
         success: function() {
             showBanner(`${quantityToAdd} x "${productData.name}" was added to cart!`, 'success', 3000);
             fetchAndUpdateCartSummary();
@@ -105,11 +109,14 @@ export function updateQuantityInCart(productId, change, container) {
         if (newQuantity <= 0) {
             removeItemFromCart(productId, container);
         } else {
+            const itemDto = {
+                quantity: newQuantity
+            };
             $.ajax({
                 url: `/api/cart/update/${productId}`,
                 type: 'PUT',
                 contentType: 'application/json',
-                data: JSON.stringify({ newQuantity: newQuantity }),
+                data: JSON.stringify(itemDto),
                 success: function() {
                     console.log(`Quantity for product ${productId} updated to ${newQuantity}.`);
                     loadCartPage(container);

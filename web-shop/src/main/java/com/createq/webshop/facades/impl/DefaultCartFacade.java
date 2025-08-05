@@ -1,7 +1,6 @@
 package com.createq.webshop.facades.impl;
 
 import com.createq.webshop.converter.CartConverter;
-import com.createq.webshop.dto.AddItemToCartDTO;
 import com.createq.webshop.dto.CartDTO;
 import com.createq.webshop.dto.CartItemDTO;
 import com.createq.webshop.dto.CartSummaryDTO;
@@ -17,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class DefaultCartFacade implements CartFacade {
@@ -56,7 +54,7 @@ public class DefaultCartFacade implements CartFacade {
                 .orElseThrow(() -> new IllegalStateException("Authenticated user not found..."));
     }
     @Override
-    public void mergeLocalCartWithUserCart(UserDetails currentUser, List<AddItemToCartDTO> localCartItems) {
+    public void mergeLocalCartWithUserCart(UserDetails currentUser, List<CartItemDTO> localCartItems) {
         UserModel user = findUserFromDetails(currentUser);
         CartModel userCart = cartService.getCartForUser(user);
         cartService.mergeItemsIntoCart(userCart, localCartItems);

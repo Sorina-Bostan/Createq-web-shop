@@ -9,7 +9,6 @@ public class UserDTO {
     private String lastName;
     private String role;
     private Boolean verified;
-    //private CartDTO cart;
 
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}

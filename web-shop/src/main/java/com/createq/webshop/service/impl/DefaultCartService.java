@@ -1,6 +1,5 @@
 package com.createq.webshop.service.impl;
-
-import com.createq.webshop.dto.AddItemToCartDTO;
+import com.createq.webshop.dto.CartItemDTO;
 import com.createq.webshop.model.CartItemModel;
 import com.createq.webshop.model.CartModel;
 import com.createq.webshop.model.ProductModel;
@@ -41,14 +40,14 @@ public class DefaultCartService implements CartService {
     }
     @Override
     @Transactional
-    public CartModel addItemToCart(CartModel cart, Long productId, int quantity) {
+    public CartModel addItemToCart(CartModel cart, Long productId, int quantityToAdd) {
         ProductModel product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
         Optional<CartItemModel> existingItemOpt = cart.getCartItems().stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst();
         int currentQuantityInCart = existingItemOpt.map(CartItemModel::getQuantity).orElse(0);
-        int requestedTotalQuantity = currentQuantityInCart + quantity;
+        int requestedTotalQuantity = currentQuantityInCart + quantityToAdd;
         if (requestedTotalQuantity > product.getStockQuantity()) {
             int remainingStock = product.getStockQuantity() - currentQuantityInCart;
             String message = "Not enough stock for product: " + product.getName();
@@ -60,7 +59,7 @@ public class DefaultCartService implements CartService {
         } else {
             CartItemModel newItem = new CartItemModel();
             newItem.setProduct(product);
-            newItem.setQuantity(quantity);
+            newItem.setQuantity(quantityToAdd);
             newItem.setCart(cart);
             newItem.setName(product.getName());
             newItem.setPrice(product.getPrice());
@@ -72,10 +71,10 @@ public class DefaultCartService implements CartService {
     }
     @Override
     @Transactional
-    public void mergeItemsIntoCart(CartModel cart, List<AddItemToCartDTO> itemsToMerge) {
+    public void mergeItemsIntoCart(CartModel cart, List<CartItemDTO> itemsToMerge) {
         if (itemsToMerge == null) return;
 
-        for (AddItemToCartDTO itemDto : itemsToMerge) {
+        for (CartItemDTO itemDto : itemsToMerge) {
             addItemToCart(cart, itemDto.getProductId(), itemDto.getQuantity());
         }
     }
