@@ -33,7 +33,7 @@ public class ProductController {
     @GetMapping("")
     @ResponseBody
     public List<ProductDTO> getAllProducts() {
-        return productFacade.getAll();
+        return productFacade.getAllProducts();
     }
     @GetMapping("/category/{categoryId}")
     @ResponseBody

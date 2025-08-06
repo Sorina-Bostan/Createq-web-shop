@@ -78,6 +78,22 @@ public class DataInitializer implements CommandLineRunner {
 
             userRepository.save(testUser);
         }
+        if (userRepository.findByUsername("admin").isEmpty()) {
+            UserModel adminUser = new UserModel();
+            adminUser.setUsername("admin");
+            adminUser.setPassword(passwordEncoder.encode("Admin123!"));
+            adminUser.setEmail("admin@example.com");
+            adminUser.setFirstName("Admin");
+            adminUser.setLastName("User");
+            adminUser.setRole("ADMIN");
+            adminUser.setVerified(true);
+
+            CartModel adminCart = new CartModel();
+            adminUser.setCart(adminCart);
+            adminCart.setUser(adminUser);
+
+            userRepository.save(adminUser);
+        }
 
     }
 

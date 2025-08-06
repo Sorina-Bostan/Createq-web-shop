@@ -8,6 +8,8 @@ import com.createq.webshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -23,26 +25,26 @@ public class DefaultUserService implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
     @Override
+    @Transactional
     public UserModel registerNewUser(UserRegistrationDTO registrationDto) {
         if (userRepository.existsByUsername(registrationDto.getUsername())) {
             throw new IllegalStateException("Username is already taken.");
         }
-        if (userRepository.existsByEmail(registrationDto.getEmail())) {
-            throw new IllegalStateException("Email is already in use.");
+        long emailCount = userRepository.countByEmail(registrationDto.getEmail());
+        if (emailCount >= 2) {
+            throw new IllegalStateException("A maximum of 2 accounts can be registered with this email address.");
         }
-
         UserModel newUser = new UserModel();
         newUser.setUsername(registrationDto.getUsername());
         newUser.setEmail(registrationDto.getEmail());
         newUser.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         newUser.setFirstName(registrationDto.getFirstName());
         newUser.setLastName(registrationDto.getLastName());
-        newUser.setRole("USER");
+        newUser.setRole("CUSTOMER");
         newUser.setVerified(false);
-
         CartModel newCart = new CartModel();
         newUser.setCart(newCart);
-
+        newCart.setUser(newUser);
         return userRepository.save(newUser);
     }
 

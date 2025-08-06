@@ -38,6 +38,7 @@ public class SecurityConfig {
                                 "/api/products/**",
                                 "/cart", "/api/cart/**","api/auth/**","api/auth/register"
                         ).permitAll()
+                        .requestMatchers("/admin/**", "/api/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout

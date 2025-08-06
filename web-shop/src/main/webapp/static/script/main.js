@@ -1,13 +1,14 @@
 import * as cartService from './cart.js';
 import * as productService from './products.js';
 import * as authService from './auth.js';
+import * as adminService from './admin.js';
 
 $(document).ready(function() {
 
     const contentContainer = $('#product-list-container');
     const body = $('body');
-    let productToRemoveId = null;
-    let actionToConfirm = null;
+    window.productToRemoveId = null;
+    window.actionToConfirm = null;
 
     body.on('click', '.category-link', function (e) {
         e.preventDefault();
@@ -70,21 +71,24 @@ $(document).ready(function() {
         $('#confirm-modal-overlay').addClass('show');
     });
     body.on('click', '#modal-confirm-btn', function () {
-        if (actionToConfirm === 'clear-cart') {
+        if (window.actionToConfirm === 'clear-cart') {
             cartService.clearCart(contentContainer);
-        } else if (actionToConfirm === 'remove-item' && productToRemoveId !== null) {
-            cartService.removeItemFromCart(productToRemoveId, contentContainer);
+        } else if (window.actionToConfirm === 'remove-item' && window.productToRemoveId !== null) {
+            cartService.removeItemFromCart(window.productToRemoveId, contentContainer);
+        } else if (window.actionToConfirm === 'delete-product' && window.productToRemoveId !== null) {
+            adminService.deleteProductById(window.productToRemoveId);
         }
-        productToRemoveId = null;
-        actionToConfirm = null;
+        window.productToRemoveId = null;
+        window.actionToConfirm = null;
         $('#confirm-modal-overlay').removeClass('show');
     });
     body.on('click', '#modal-cancel-btn', function () {
-        productToRemoveId = null;
-        actionToConfirm = null;
+        window.productToRemoveId = null;
+        window.actionToConfirm = null;
         $('#confirm-modal-overlay').removeClass('show');
     });
 
+    //login actions
     body.on('click', '#login-link', function (e) {
         e.preventDefault();
         authService.loadLoginPage(contentContainer);
@@ -107,35 +111,23 @@ $(document).ready(function() {
             data: JSON.stringify(loginData),
 
             success: function(response) {
-                window.isAuthenticated = true;
-                window.currentUsername = response.username;
-                cartService.showBanner('Welcome, ' + response.username + '!','welcome',2000)
-                $('#welcome-message-container').show();
-                $('#username-display').text(response.username);
-                updateUserStatusUI()
-                cartService.mergeLocalCartWithServer();
-                productService.loadAllProducts(contentContainer);
+                cartService.showBanner('Welcome, ' + response.username + '!', 'welcome', 2000);
+                //updateUserStatusUI();
+                if (JSON.parse(localStorage.getItem('webshopCart'))?.length > 0) {
+                    cartService.mergeLocalCartWithServer();
+                }
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             },
-
-            error: function(xhr) {
-                const errorMessage = xhr.responseText || "An unknown error occurred.";
-                errorContainer.text(errorMessage);
-                errorContainer.show();
-            }
         });
     });
-    function updateUserStatusUI() {
-        if (window.isAuthenticated) {
-            $('#logout-menu-item').show();
-            $('#login-menu-item').hide();
+    body.on('click','#go-to-login',function(e){
+        e.preventDefault();
+        authService.loadLoginPage(contentContainer);
+    })
 
-        } else {
-            $('#welcome-message-container').hide();
-            $('#logout-menu-item').hide();
-            $('#login-menu-item').show();
-        }
-    }
-
+    //register actions
     body.on('click', '#go-to-register', function(e) {
         e.preventDefault();
         authService.loadRegisterPage(contentContainer);
@@ -144,12 +136,6 @@ $(document).ready(function() {
         e.preventDefault();
         authService.loadRegisterPage(contentContainer);
     });
-
-    body.on('click','#go-to-login',function(e){
-        e.preventDefault();
-        authService.loadLoginPage(contentContainer);
-    })
-
     body.on('submit', '#register-form', function(e) {
         e.preventDefault();
 
@@ -187,6 +173,13 @@ $(document).ready(function() {
         }
     });
 
+    //admin actions
+    body.on('click', '#admin-panel-link', function(e) {
+        e.preventDefault();
+        $('.forVideo').hide();
+        adminService.loadAdminPage(contentContainer);
+    });
+
     body.on('keyup', '#reg-password', function() {
         authService.validatePasswordStrength($(this));
     });
@@ -214,6 +207,15 @@ $(document).ready(function() {
 
     $(window).on('popstate', function() { routePage(); });
 
+    function updateUserStatusUI() {
+        if (window.isAuthenticated) {
+            $('#welcome-message-container').show();
+            $('#username-display').text(window.currentUsername);
+        } else {
+            $('#welcome-message-container').hide();
+        }
+    }
+
     function routePage() {
         const path = window.location.pathname;
         let categoryMatch = path.match(/^\/products\/category\/(\d+)$/);
@@ -239,9 +241,13 @@ $(document).ready(function() {
             authService.loadRegisterPage(contentContainer);
             return;
         }
+        if(path==='/admin'){
+            adminService.loadAdminPage(contentContainer);
+            return;
+        }
         productService.loadAllProducts(contentContainer);
     }
-
+    updateUserStatusUI()
     cartService.fetchAndUpdateCartSummary();
     cartService.updateCartSummary();
     routePage();
