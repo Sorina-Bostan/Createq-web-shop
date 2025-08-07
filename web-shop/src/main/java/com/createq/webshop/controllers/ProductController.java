@@ -7,6 +7,7 @@ import com.createq.webshop.facades.ProductFacade;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +29,6 @@ public class ProductController {
         model.addAttribute("product", productFacade.getProductById(productId));
         return "fragments/productDetailsFragment";
     }
-
-
     @GetMapping("")
     @ResponseBody
     public List<ProductDTO> getAllProducts() {
@@ -39,6 +38,11 @@ public class ProductController {
     @ResponseBody
     public List<ProductDTO> getProducts(@PathVariable Long categoryId) {
         return productFacade.getProductsByCategoryId(categoryId);
+    }
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<ProductDTO> getProductDetails(@PathVariable Long productId) {
+        ProductDTO productDto = productFacade.getProductById(productId);
+        return ResponseEntity.ok(productDto);
     }
 
     // this method will be called when a method in this class throws a ResourceNotFoundException

@@ -32,7 +32,6 @@ public class SecurityConfig {
                         .requestMatchers("/WEB-INF/jsp/**").permitAll()
                         .requestMatchers(
                                 "/static/**", "/css/**", "/js/**", "/images/**", "/video/**",
-
                                 "/", "/categories", "/products", "/products/**",
                                 "/login", "/register", "/api/auth/login",
                                 "/api/products/**",

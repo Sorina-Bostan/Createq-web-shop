@@ -120,6 +120,11 @@ $(document).ready(function() {
                     window.location.reload();
                 }, 1500);
             },
+            error: function(xhr) {
+                const errorMessage = xhr.responseText || "An unknown error occurred.";
+                errorContainer.text(errorMessage);
+                errorContainer.show();
+            }
         });
     });
     body.on('click','#go-to-login',function(e){
@@ -177,6 +182,7 @@ $(document).ready(function() {
     body.on('click', '#admin-panel-link', function(e) {
         e.preventDefault();
         $('.forVideo').hide();
+        history.pushState({}, "Admin Panel", "/admin/view");
         adminService.loadAdminPage(contentContainer);
     });
 

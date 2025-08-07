@@ -8,6 +8,7 @@ import com.createq.webshop.model.ProductModel;
 import com.createq.webshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class DefaultProductFacade implements ProductFacade {
         return productConverter.convertAll(models);
     }
     @Override
+    @Transactional(readOnly = true)
     public ProductDTO getProductById(Long productId) {
         ProductModel productModel = productService.getProductById(productId);
         return productConverter.convert(productModel);

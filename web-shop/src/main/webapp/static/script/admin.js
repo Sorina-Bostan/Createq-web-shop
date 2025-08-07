@@ -1,6 +1,5 @@
 import { showBanner } from './cart.js';
 export function loadAdminPage(container) {
-    history.pushState({}, "Admin Panel", "/admin/view");
     container.load('/admin/view', function() {
         loadProductsIntoTable();
         loadCategoriesIntoSelect();
@@ -39,7 +38,7 @@ $(document).on('submit', '#product-admin-form', function(event) {
         type: method,
         contentType: 'application/json',
         data: JSON.stringify(productData),
-        success: function() {
+        success: () => {
             showBanner(`Product ${isUpdate ? 'updated' : 'created'} successfully!`, "success", 3000);
             clearProductForm();
             loadProductsIntoTable();
@@ -50,9 +49,8 @@ $(document).on('submit', '#product-admin-form', function(event) {
 $(document).on('click', '#clear-form-btn', clearProductForm);
 $(document).on('click', '.edit-btn', function() {
     const productId = $(this).closest('tr').data('product-id');
-
     $.ajax({
-        url: `/api/products/${productId}`,
+        url: `/api/products/product/${productId}`,
         type: 'GET',
         success: function(product) {
             $('#form-title').text('Edit Product');
@@ -63,7 +61,6 @@ $(document).on('click', '.edit-btn', function() {
             $('#product-category').val(product.categoryId);
             $('#product-image-url').val(product.imageUrl);
             $('#product-description').val(product.description);
-
             window.scrollTo(0, 0);
         },
         error: () => showBanner('Could not fetch product details.', "error", 3000)

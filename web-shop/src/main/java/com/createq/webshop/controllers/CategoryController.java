@@ -29,7 +29,8 @@ public class CategoryController {
             "/products/{productId}",
             "/cart",
             "/login",
-            "/register"
+            "/register",
+            "/admin/products"
     })
     public String forwardToMainPage(Model model) {
         model.addAttribute("categories", categoryFacade.getAll());
