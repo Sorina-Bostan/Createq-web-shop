@@ -30,7 +30,7 @@ public class CategoryController {
             "/cart",
             "/login",
             "/register",
-            "/admin/products"
+            "/admin/view"
     })
     public String forwardToMainPage(Model model) {
         model.addAttribute("categories", categoryFacade.getAll());

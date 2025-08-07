@@ -1,6 +1,7 @@
 package com.createq.webshop.facades.impl;
 
 import com.createq.webshop.converter.UserConverter;
+import com.createq.webshop.dto.AdminCreateUserDTO;
 import com.createq.webshop.dto.UserDTO;
 import com.createq.webshop.dto.UserRegistrationDTO;
 import com.createq.webshop.facades.UserFacade;
@@ -32,5 +33,20 @@ public class DefaultUserFacade implements UserFacade {
     public List<UserDTO> getAllUsers() {
         List<UserModel> userModels = userService.findAllUsers();
         return userConverter.convertAll(userModels);
+    }
+    @Override
+    public UserDTO createUserByAdmin(AdminCreateUserDTO userDTO) {
+        UserModel createdUser = userService.createUserByAdmin(userDTO);
+        return userConverter.convert(createdUser);
+    }
+    @Override
+    public UserDTO updateUserRole(Long userId, String newRole) {
+        UserModel updatedUser = userService.updateUserRole(userId, newRole);
+        return userConverter.convert(updatedUser);
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userService.deleteUser(userId);
     }
 }

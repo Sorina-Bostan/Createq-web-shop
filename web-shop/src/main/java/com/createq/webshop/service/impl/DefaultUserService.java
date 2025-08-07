@@ -1,11 +1,15 @@
 package com.createq.webshop.service.impl;
 import com.createq.webshop.converter.UserConverter;
+import com.createq.webshop.dto.AdminCreateUserDTO;
 import com.createq.webshop.dto.UserRegistrationDTO;
+import com.createq.webshop.exception.ResourceNotFoundException;
 import com.createq.webshop.model.CartModel;
 import com.createq.webshop.model.UserModel;
 import com.createq.webshop.repository.UserRepository;
 import com.createq.webshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,9 +66,49 @@ public class DefaultUserService implements UserService {
     public List<UserModel> findAllUsers() {
         return userRepository.findAll();
     }
-
     @Override
+    @Transactional
+    public UserModel createUserByAdmin(AdminCreateUserDTO userDTO) {
+        if (userRepository.existsByUsername(userDTO.getUsername())) {
+            throw new IllegalStateException("Username is already taken.");
+        }
+        UserModel newUser = new UserModel();
+        newUser.setUsername(userDTO.getUsername());
+        newUser.setEmail(userDTO.getEmail());
+        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        newUser.setFirstName(userDTO.getFirstName());
+        newUser.setLastName(userDTO.getLastName());
+        newUser.setVerified(false);
+        newUser.setRole(userDTO.getRole());
+        CartModel newCart = new CartModel();
+        newUser.setCart(newCart);
+        newCart.setUser(newUser);
+
+        return userRepository.save(newUser);
+    }
+    @Override
+    @Transactional
+    public UserModel updateUserRole(Long userId, String newRole) {
+        UserModel user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        if (!"ADMIN".equals(newRole) && !"CUSTOMER".equals(newRole)) {
+            throw new IllegalArgumentException("Invalid role specified.");
+        }
+        user.setRole(newRole);
+        return userRepository.save(user);
+    }
+    @Override
+    @Transactional
     public void deleteUser(Long userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        UserModel userToDelete = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        if (userToDelete.getUsername().equals(currentUsername)) {
+            throw new IllegalStateException("You cannot delete your own account.");
+        }
         userRepository.deleteById(userId);
     }
+
 }

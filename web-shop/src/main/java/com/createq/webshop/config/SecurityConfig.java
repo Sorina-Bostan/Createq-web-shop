@@ -35,7 +35,7 @@ public class SecurityConfig {
                                 "/", "/categories", "/products", "/products/**",
                                 "/login", "/register", "/api/auth/login",
                                 "/api/products/**",
-                                "/cart", "/api/cart/**","api/auth/**","api/auth/register"
+                                "/cart", "/api/cart/**","api/auth/**","api/auth/register","api/categories/**"
                         ).permitAll()
                         .requestMatchers("/admin/**", "/api/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()

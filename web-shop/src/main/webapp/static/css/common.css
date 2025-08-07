@@ -582,8 +582,8 @@ th.product-column {
 }
 
 #confirm-modal {
-    background-color: #fdfaf8;
-    color: #333;
+    background-color: #cf9872;
+    color: #240604;
     padding: 30px 40px;
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
@@ -601,7 +601,7 @@ th.product-column {
 #modal-title {
     margin-top: 0;
     font-size: 1.5rem;
-    color: #333;
+    color: #240604;
 }
 
 #modal-message {
@@ -627,11 +627,11 @@ th.product-column {
 }
 
 #modal-confirm-btn {
-    background-color: #d9534f;
+    background-color: #653717;
     color: white;
 }
 #modal-confirm-btn:hover {
-    background-color: #c9302c;
+    background-color: #bf8060;
 }
 
 #modal-cancel-btn {

@@ -9,6 +9,9 @@ $(document).ready(function() {
     const body = $('body');
     window.productToRemoveId = null;
     window.actionToConfirm = null;
+    window.userToRemoveId = null;
+    window.userToUpdateId = null;
+    window.roleSelectElement = null;
 
     body.on('click', '.category-link', function (e) {
         e.preventDefault();
@@ -56,34 +59,54 @@ $(document).ready(function() {
 
     // cart actions
     body.on('click', '#clear-cart-btn', function () {
-        actionToConfirm = 'clear-cart';
+        window.actionToConfirm = 'clear-cart';
         $('#modal-title').text('Empty Cart');
         $('#modal-message').text('Are you sure you want to remove all items from your cart?');
         $('#modal-confirm-btn').text('Yes, Empty Cart');
         $('#confirm-modal-overlay').addClass('show');
     });
     body.on('click', '.remove-item-btn', function () {
-        actionToConfirm = 'remove-item';
-        productToRemoveId = parseInt($(this).data('product-id'));
+        window.actionToConfirm = 'remove-item';
+        window.productToRemoveId = parseInt($(this).data('product-id'));
         $('#modal-title').text('Remove Item');
         $('#modal-message').text('Are you sure you want to remove this item from your cart?');
         $('#modal-confirm-btn').text('Yes, Remove');
         $('#confirm-modal-overlay').addClass('show');
     });
     body.on('click', '#modal-confirm-btn', function () {
+        const contentContainer = $('#product-list-container');
         if (window.actionToConfirm === 'clear-cart') {
             cartService.clearCart(contentContainer);
         } else if (window.actionToConfirm === 'remove-item' && window.productToRemoveId !== null) {
             cartService.removeItemFromCart(window.productToRemoveId, contentContainer);
-        } else if (window.actionToConfirm === 'delete-product' && window.productToRemoveId !== null) {
+        }
+        else if (window.actionToConfirm === 'delete-product' && window.productToRemoveId !== null) {
             adminService.deleteProductById(window.productToRemoveId);
         }
+        else if (window.actionToConfirm === 'delete-user' && window.userToRemoveId !== null) {
+            adminService.deleteUserById(window.userToRemoveId);
+        }
+        else if (window.actionToConfirm === 'update-role' && window.userToUpdateId !== null) {
+            const select = window.roleSelectElement;
+            const newRole = select.val();
+            adminService.updateUserRole(window.userToUpdateId, newRole, select);
+        }
         window.productToRemoveId = null;
+        window.userToRemoveId = null;
+        window.userToUpdateId = null;
+        window.roleSelectElement = null;
         window.actionToConfirm = null;
         $('#confirm-modal-overlay').removeClass('show');
     });
     body.on('click', '#modal-cancel-btn', function () {
+        if (window.actionToConfirm === 'update-role' && window.roleSelectElement) {
+            const select = window.roleSelectElement;
+            select.val(select.data('previous-role'));
+        }
         window.productToRemoveId = null;
+        window.userToRemoveId = null;
+        window.userToUpdateId = null;
+        window.roleSelectElement = null;
         window.actionToConfirm = null;
         $('#confirm-modal-overlay').removeClass('show');
     });
@@ -112,7 +135,6 @@ $(document).ready(function() {
 
             success: function(response) {
                 cartService.showBanner('Welcome, ' + response.username + '!', 'welcome', 2000);
-                //updateUserStatusUI();
                 if (JSON.parse(localStorage.getItem('webshopCart'))?.length > 0) {
                     cartService.mergeLocalCartWithServer();
                 }
@@ -247,7 +269,7 @@ $(document).ready(function() {
             authService.loadRegisterPage(contentContainer);
             return;
         }
-        if(path==='/admin'){
+        if (path === '/admin/view') {
             adminService.loadAdminPage(contentContainer);
             return;
         }
