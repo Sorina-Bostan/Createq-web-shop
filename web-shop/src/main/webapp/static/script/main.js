@@ -2,7 +2,16 @@ import * as cartService from './cart.js';
 import * as productService from './products.js';
 import * as authService from './auth.js';
 import * as adminService from './admin.js';
-
+import {showBanner} from "./cart.js";
+$(function () {
+    const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    if (token && header) {
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    }
+});
 $(document).ready(function() {
 
     const contentContainer = $('#product-list-container');
@@ -181,33 +190,26 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 data: JSON.stringify(registerData),
                 success: function(response) {
-                    alert(response);
+                    showBanner(response,"success",3000);
                     authService.loadLoginPage(contentContainer);
                 },
                 error: function(xhr) {
                     let errorMessage = "An unknown server error occurred. Please try again later.";
-                    // noinspection JSUnresolvedVariable
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        // noinspection JSUnresolvedVariable
-                        errorMessage = xhr.responseJSON.message;
-                    }
-                    else if (xhr.responseText) {
-                        errorMessage = xhr.responseText;
+                    try {
+                        const errorResponse = JSON.parse(xhr.responseText);
+                        if (errorResponse && errorResponse.message) {
+                            errorMessage = errorResponse.message;
+                        }
+                    } catch (e) {
+                        if (xhr.responseText) {
+                            errorMessage = xhr.responseText;
+                        }
                     }
                     $('#register-error-message').text(errorMessage).show();
                 }
             });
         }
     });
-
-    //admin actions
-    body.on('click', '#admin-panel-link', function(e) {
-        e.preventDefault();
-        $('.forVideo').hide();
-        history.pushState({}, "Admin Panel", "/admin/view");
-        adminService.loadAdminPage(contentContainer);
-    });
-
     body.on('keyup', '#reg-password', function() {
         authService.validatePasswordStrength($(this));
     });
@@ -223,6 +225,13 @@ $(document).ready(function() {
         }
     });
 
+    //admin actions
+    body.on('click', '#admin-panel-link', function(e) {
+        e.preventDefault();
+        $('.forVideo').hide();
+        history.pushState({}, "Admin Panel", "/admin/view");
+        adminService.loadAdminPage(contentContainer);
+    });
 
     // quantity
     body.on('click', '.cart-item-row .increase-btn', function() { cartService.updateQuantityInCart($(this).data('product-id'), 1, contentContainer); });

@@ -2,6 +2,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>ModernWalk</title>
@@ -16,6 +17,8 @@
         </sec:authorize>
         window.isAdmin = <sec:authorize access="hasAuthority('ROLE_ADMIN')">true</sec:authorize><sec:authorize access="!hasAuthority('ROLE_ADMIN')">false</sec:authorize>;
     </script>
+    <meta name="_csrf" content="<spring:eval expression='_csrf.token' />"/>
+    <meta name="_csrf_header" content="<spring:eval expression='_csrf.headerName' />"/>
 </head>
 <body>
     <div id="cart-banner">
@@ -59,6 +62,7 @@
                 <sec:authorize access="isAuthenticated()">
                     <li id="logout-menu-item">
                         <form action="<c:url value='/perform_logout'/>" method="post" class="logout-form">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <button type="submit" class="logout-button-link"><strong>Logout</strong></button>
                         </form>
                     </li>
