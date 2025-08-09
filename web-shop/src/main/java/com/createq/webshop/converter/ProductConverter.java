@@ -21,6 +21,10 @@ public class ProductConverter {
         productDTO.setImageUrl(productModel.getImageUrl());
         productDTO.setCategoryName(productModel.getCategory().getName());
         productDTO.setStockQuantity(productModel.getStockQuantity());
+        if (productModel.getCategory() != null) {
+            productDTO.setCategoryId(productModel.getCategory().getId());
+            productDTO.setCategoryName(productModel.getCategory().getName());
+        }
         return productDTO;
     }
     public List<ProductDTO> convertAll(List<ProductModel> productsModel) {

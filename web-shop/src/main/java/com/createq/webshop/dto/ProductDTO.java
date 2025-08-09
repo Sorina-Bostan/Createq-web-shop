@@ -16,6 +16,7 @@ public class ProductDTO {
     private String imageUrl;
     private int stockQuantity;
     private String categoryName;
+    private Long categoryId;
 
     public String getCategoryName() {return categoryName;}
     public void setCategoryName(String categoryName) {this.categoryName = categoryName;}
@@ -31,4 +32,6 @@ public class ProductDTO {
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public int getStockQuantity() { return stockQuantity; }
     public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
+    public Long getCategoryId() { return categoryId; }
+    public void setCategoryId(Long categoryId) { this.categoryId = categoryId; }
 }

@@ -1,13 +1,26 @@
 import * as cartService from './cart.js';
 import * as productService from './products.js';
 import * as authService from './auth.js';
-
+import * as adminService from './admin.js';
+import {showBanner} from "./cart.js";
+$(function () {
+    const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    if (token && header) {
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    }
+});
 $(document).ready(function() {
 
     const contentContainer = $('#product-list-container');
     const body = $('body');
-    let productToRemoveId = null;
-    let actionToConfirm = null;
+    window.productToRemoveId = null;
+    window.actionToConfirm = null;
+    window.userToRemoveId = null;
+    window.userToUpdateId = null;
+    window.roleSelectElement = null;
 
     body.on('click', '.category-link', function (e) {
         e.preventDefault();
@@ -55,36 +68,59 @@ $(document).ready(function() {
 
     // cart actions
     body.on('click', '#clear-cart-btn', function () {
-        actionToConfirm = 'clear-cart';
+        window.actionToConfirm = 'clear-cart';
         $('#modal-title').text('Empty Cart');
         $('#modal-message').text('Are you sure you want to remove all items from your cart?');
         $('#modal-confirm-btn').text('Yes, Empty Cart');
         $('#confirm-modal-overlay').addClass('show');
     });
     body.on('click', '.remove-item-btn', function () {
-        actionToConfirm = 'remove-item';
-        productToRemoveId = parseInt($(this).data('product-id'));
+        window.actionToConfirm = 'remove-item';
+        window.productToRemoveId = parseInt($(this).data('product-id'));
         $('#modal-title').text('Remove Item');
         $('#modal-message').text('Are you sure you want to remove this item from your cart?');
         $('#modal-confirm-btn').text('Yes, Remove');
         $('#confirm-modal-overlay').addClass('show');
     });
     body.on('click', '#modal-confirm-btn', function () {
-        if (actionToConfirm === 'clear-cart') {
+        const contentContainer = $('#product-list-container');
+        if (window.actionToConfirm === 'clear-cart') {
             cartService.clearCart(contentContainer);
-        } else if (actionToConfirm === 'remove-item' && productToRemoveId !== null) {
-            cartService.removeItemFromCart(productToRemoveId, contentContainer);
+        } else if (window.actionToConfirm === 'remove-item' && window.productToRemoveId !== null) {
+            cartService.removeItemFromCart(window.productToRemoveId, contentContainer);
         }
-        productToRemoveId = null;
-        actionToConfirm = null;
+        else if (window.actionToConfirm === 'delete-product' && window.productToRemoveId !== null) {
+            adminService.deleteProductById(window.productToRemoveId);
+        }
+        else if (window.actionToConfirm === 'delete-user' && window.userToRemoveId !== null) {
+            adminService.deleteUserById(window.userToRemoveId);
+        }
+        else if (window.actionToConfirm === 'update-role' && window.userToUpdateId !== null) {
+            const select = window.roleSelectElement;
+            const newRole = select.val();
+            adminService.updateUserRole(window.userToUpdateId, newRole, select);
+        }
+        window.productToRemoveId = null;
+        window.userToRemoveId = null;
+        window.userToUpdateId = null;
+        window.roleSelectElement = null;
+        window.actionToConfirm = null;
         $('#confirm-modal-overlay').removeClass('show');
     });
     body.on('click', '#modal-cancel-btn', function () {
-        productToRemoveId = null;
-        actionToConfirm = null;
+        if (window.actionToConfirm === 'update-role' && window.roleSelectElement) {
+            const select = window.roleSelectElement;
+            select.val(select.data('previous-role'));
+        }
+        window.productToRemoveId = null;
+        window.userToRemoveId = null;
+        window.userToUpdateId = null;
+        window.roleSelectElement = null;
+        window.actionToConfirm = null;
         $('#confirm-modal-overlay').removeClass('show');
     });
 
+    //login actions
     body.on('click', '#login-link', function (e) {
         e.preventDefault();
         authService.loadLoginPage(contentContainer);
@@ -107,16 +143,14 @@ $(document).ready(function() {
             data: JSON.stringify(loginData),
 
             success: function(response) {
-                window.isAuthenticated = true;
-                window.currentUsername = response.username;
-                cartService.showBanner('Welcome, ' + response.username + '!','welcome',2000)
-                $('#welcome-message-container').show();
-                $('#username-display').text(response.username);
-                updateUserStatusUI()
-                cartService.mergeLocalCartWithServer();
-                productService.loadAllProducts(contentContainer);
+                cartService.showBanner('Welcome, ' + response.username + '!', 'welcome', 2000);
+                if (JSON.parse(localStorage.getItem('webshopCart'))?.length > 0) {
+                    cartService.mergeLocalCartWithServer();
+                }
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             },
-
             error: function(xhr) {
                 const errorMessage = xhr.responseText || "An unknown error occurred.";
                 errorContainer.text(errorMessage);
@@ -124,18 +158,12 @@ $(document).ready(function() {
             }
         });
     });
-    function updateUserStatusUI() {
-        if (window.isAuthenticated) {
-            $('#logout-menu-item').show();
-            $('#login-menu-item').hide();
+    body.on('click','#go-to-login',function(e){
+        e.preventDefault();
+        authService.loadLoginPage(contentContainer);
+    })
 
-        } else {
-            $('#welcome-message-container').hide();
-            $('#logout-menu-item').hide();
-            $('#login-menu-item').show();
-        }
-    }
-
+    //register actions
     body.on('click', '#go-to-register', function(e) {
         e.preventDefault();
         authService.loadRegisterPage(contentContainer);
@@ -144,12 +172,6 @@ $(document).ready(function() {
         e.preventDefault();
         authService.loadRegisterPage(contentContainer);
     });
-
-    body.on('click','#go-to-login',function(e){
-        e.preventDefault();
-        authService.loadLoginPage(contentContainer);
-    })
-
     body.on('submit', '#register-form', function(e) {
         e.preventDefault();
 
@@ -168,25 +190,26 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 data: JSON.stringify(registerData),
                 success: function(response) {
-                    alert(response);
+                    showBanner(response,"success",3000);
                     authService.loadLoginPage(contentContainer);
                 },
                 error: function(xhr) {
                     let errorMessage = "An unknown server error occurred. Please try again later.";
-                    // noinspection JSUnresolvedVariable
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        // noinspection JSUnresolvedVariable
-                        errorMessage = xhr.responseJSON.message;
-                    }
-                    else if (xhr.responseText) {
-                        errorMessage = xhr.responseText;
+                    try {
+                        const errorResponse = JSON.parse(xhr.responseText);
+                        if (errorResponse && errorResponse.message) {
+                            errorMessage = errorResponse.message;
+                        }
+                    } catch (e) {
+                        if (xhr.responseText) {
+                            errorMessage = xhr.responseText;
+                        }
                     }
                     $('#register-error-message').text(errorMessage).show();
                 }
             });
         }
     });
-
     body.on('keyup', '#reg-password', function() {
         authService.validatePasswordStrength($(this));
     });
@@ -202,6 +225,13 @@ $(document).ready(function() {
         }
     });
 
+    //admin actions
+    body.on('click', '#admin-panel-link', function(e) {
+        e.preventDefault();
+        $('.forVideo').hide();
+        history.pushState({}, "Admin Panel", "/admin/view");
+        adminService.loadAdminPage(contentContainer);
+    });
 
     // quantity
     body.on('click', '.cart-item-row .increase-btn', function() { cartService.updateQuantityInCart($(this).data('product-id'), 1, contentContainer); });
@@ -213,6 +243,15 @@ $(document).ready(function() {
     body.on('change', '#sort-select', function() { productService.sortAndRenderProducts($(this).val()); });
 
     $(window).on('popstate', function() { routePage(); });
+
+    function updateUserStatusUI() {
+        if (window.isAuthenticated) {
+            $('#welcome-message-container').show();
+            $('#username-display').text(window.currentUsername);
+        } else {
+            $('#welcome-message-container').hide();
+        }
+    }
 
     function routePage() {
         const path = window.location.pathname;
@@ -239,9 +278,13 @@ $(document).ready(function() {
             authService.loadRegisterPage(contentContainer);
             return;
         }
+        if (path === '/admin/view') {
+            adminService.loadAdminPage(contentContainer);
+            return;
+        }
         productService.loadAllProducts(contentContainer);
     }
-
+    updateUserStatusUI()
     cartService.fetchAndUpdateCartSummary();
     cartService.updateCartSummary();
     routePage();

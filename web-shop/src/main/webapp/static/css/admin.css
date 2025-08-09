@@ -1,0 +1,159 @@
+.admin-panel-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: rgba(170, 130, 106, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    color: #240604;
+}
+.admin-panel-container h1, .admin-panel-container h2 {
+    text-align: center;
+    text-shadow: 2px 3px 1px #b5764a;
+    margin-bottom: 25px;
+}
+.admin-form-container {
+    background-color: #aa826a;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    border: 1px solid #240604;
+}
+.admin-form-container .form-group {
+    margin-bottom: 15px;
+}
+.admin-form-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.admin-form-container input,
+.admin-form-container select,
+.admin-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #653717;
+    border-radius: 5px;
+    background-color: #d3b8a5;
+    font-family: 'Prata', serif;
+    box-sizing: border-box;
+}
+.admin-form-container button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #653717;
+    color: white;
+    font-family: 'Prata', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.2s;
+}
+.admin-form-container button:hover {
+    background-color: saddlebrown;
+}
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.admin-table th, .admin-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #b38c79;
+}
+.admin-table thead {
+    background-color: rgba(36, 6, 4, 0.1);
+}
+.admin-table .edit-btn, .admin-table .delete-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.admin-table .edit-btn {
+    background-color: #653717;
+    color: white;
+}
+.admin-table .delete-btn {
+    background-color: #d9534f;
+    color: white;
+}
+.admin-table .role-select {
+    font-family: 'Prata', serif;
+    font-size: 0.9rem;
+    color: #240604;
+    background-color: #d3b8a5;
+    border: 1px solid #653717;
+    border-radius: 5px;
+    padding: 6px 8px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23653717%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.9z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 8px auto;
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-table .role-select:hover {
+    border-color: #240604;
+}
+
+.admin-table .role-select:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(101, 55, 23, 0.5);
+}
+.admin-table .delete-user-btn {
+    font-family: 'Prata', serif;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: 1px solid #a94442;
+    background-color: #d9534f;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.admin-table .delete-user-btn:hover {
+    background-color: #c9302c;
+    border-color: #843534;
+}
+.admin-tabs {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #653717;
+}
+.admin-tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: transparent;
+    font-family: 'Prata', serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+}
+.admin-tab-btn.active {
+    background-color: #aa826a;
+    border: 2px solid #653717;
+    border-bottom: none;
+}
+.admin-add-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #653717;
+    color: white;
+    font-family: 'Prata', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    transition: background-color 0.2s;
+}

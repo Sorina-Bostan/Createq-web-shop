@@ -237,3 +237,57 @@
     padding: 10px 40px;
     box-sizing: border-box;
 }
+#register-form #password-strength-meter {
+    margin-top: 8px;
+    height: 10px;
+    background-color: #d3b8a5;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #653717;
+}
+#register-form #strength-bar {
+    height: 100%;
+    width: 0;
+    transition: width 0.3s, background-color 0.3s;
+}
+#register-form #strength-text {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 0.7em;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    visibility: hidden;
+}
+#register-form #strength-bar.weak {
+    width: 25%;
+    background-color: #d9534f;
+}
+#register-form #strength-bar.medium {
+    width: 60%;
+    background-color: #f0ad4e;
+}
+#register-form #strength-bar.strong {
+    width: 100%;
+    background-color: #5cb85c;
+}
+#register-form #strength-bar.weak + #strength-text,
+#register-form #strength-bar.medium + #strength-text,
+#register-form #strength-bar.strong + #strength-text {
+    visibility: visible;
+}
+#register-form .error-message-inline {
+    color: #a94442;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none;
+    min-height: 1em;
+}
+
+#register-form .input-error {
+    border-color: #d9534f !important;
+    box-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
+}

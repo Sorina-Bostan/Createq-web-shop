@@ -44,11 +44,13 @@ public class AuthController {
                             loginRequest.getPassword()
                     )
             );
+            boolean isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(authentication);
             HttpSession session = request.getSession(true);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-            LoginResponseDTO response = new LoginResponseDTO("Welcome, " + authentication.getName() + "!", authentication.getName());
+            LoginResponseDTO response = new LoginResponseDTO("Welcome, " + authentication.getName() + "!", authentication.getName(),isAdmin);
             return ResponseEntity.ok(response);
 
         } catch (AuthenticationException e) {

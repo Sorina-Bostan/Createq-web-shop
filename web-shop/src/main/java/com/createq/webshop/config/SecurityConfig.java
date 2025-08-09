@@ -27,17 +27,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/WEB-INF/jsp/**").permitAll()
                         .requestMatchers(
                                 "/static/**", "/css/**", "/js/**", "/images/**", "/video/**",
-
                                 "/", "/categories", "/products", "/products/**",
                                 "/login", "/register", "/api/auth/login",
                                 "/api/products/**",
-                                "/cart", "/api/cart/**","api/auth/**","api/auth/register"
+                                "/cart", "/api/cart/**","api/auth/**","api/auth/register","api/categories/**"
                         ).permitAll()
+                        .requestMatchers("/admin/**", "/api/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout
